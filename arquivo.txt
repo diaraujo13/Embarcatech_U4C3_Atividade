@@ -1,0 +1,2 @@
+Após clonar o repositório, você deve importar o projeto dentro da extenção Raspberry Pi Pico W.
+Caso não faça a importação, o VS code pode apresentar erros de sintaxe devido a falta das bibliotecas!
