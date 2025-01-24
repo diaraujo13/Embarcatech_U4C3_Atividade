@@ -249,7 +249,6 @@ int main()
                 }
      
                 break;
-                
             case '4':
             case '7':
             case '0':
@@ -265,6 +264,11 @@ int main()
                 desenho_pio(desenho1, valor_led, pio, sm, r, g, b);
                 break;
             case 'A':
+                r = 0;
+                g = 0;
+                b = 0;
+                desenho_pio(matrixOff, valor_led, pio, sm, r, g, b);
+                break;         
             case '3':
             case '6':
             case '9':
