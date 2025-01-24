@@ -1,8 +1,0 @@
-Conecte a matriz de LEDs aos pinos GPIO do microcontrolador. A matriz deve ser conectada de forma que consiga enviar dados em série, uma vez que os LEDs WS2812B são endereçados sequencialmente. Normalmente, você precisará de um pino de dados, além de alimentação (VCC) e terra (GND).
-
-Escreva o código em C para controlar a matriz. Inicie definindo as constantes e variáveis necessárias, como a quantidade de LEDs e a cor que deseja exibir. Utilize funções de temporização como sleep_ms() e sleep_us() para controlar o tempo que cada LED deve permanecer aceso.
-
-
-Endereçamento e Comunicação: Para enviar dados à matriz, você precisará seguir o protocolo WS2812B, que requer um formato específico de sinal. Prepare os dados em um formato de 24 bits (8 bits para cada cor: vermelho, verde e azul) e envie-os para a matriz, respeitando os tempos altos e baixos necessários para cada bit.
-
-
