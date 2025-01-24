@@ -70,6 +70,7 @@
     [ "keypad1:R3", "pico:GP4", "green", [ "v0" ] ],
     [ "keypad1:R2", "pico:GP3", "green", [ "v0" ] ],
     [ "keypad1:R1", "pico:GP2", "green", [ "v0" ] ],
+    [ "keypad1:C2", "pico:GP10", "green", [ "v0" ] ],
     [ "bz1:2", "pico:GP28", "red", [ "v0" ] ],
     [ "bz1:1", "pico:GND.7", "black", [ "v0" ] ],
     [ "pico:GND.4", "r3:1", "black", [ "h-76.8", "v182.44", "h-249.6", "v-57.6" ] ],
@@ -152,8 +153,7 @@
     [ "vcc5:VCC", "rgb17:VDD", "red", [ "v19.2", "h144" ] ],
     [ "vcc5:VCC", "rgb18:VDD", "red", [ "v19.2", "h220.8" ] ],
     [ "vcc5:VCC", "rgb19:VDD", "red", [ "v19.2", "h316.8" ] ],
-    [ "vcc5:VCC", "rgb20:VDD", "red", [ "v19.2", "h403.2" ] ],
-    [ "keypad1:C2", "pico:GP10", "green", [ "v0" ] ]
+    [ "vcc5:VCC", "rgb20:VDD", "red", [ "v19.2", "h403.2" ] ]
   ],
   "dependencies": {}
 }
