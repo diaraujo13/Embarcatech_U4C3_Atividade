@@ -125,7 +125,14 @@ double wave10[25]={
     0.5, 0.5, 0.5, 0.5, 0.5,
     0.5, 0.5, 0.5, 0.5, 0.5
 };
-
+//LEDs vermelhos em 80%
+double leds_80[25]={
+    0.8, 0.8, 0.8, 0.8, 0.8,
+    0.8, 0.8, 0.8, 0.8, 0.8,
+    0.8, 0.8, 0.8, 0.8, 0.8,
+    0.8, 0.8, 0.8, 0.8, 0.8,
+    0.8, 0.8, 0.8, 0.8, 0.8
+};
 uint32_t matrix_rgb(float r, float g, float b)
 {
     unsigned char R, G, B;
@@ -253,9 +260,11 @@ int main()
             case '7':
             case '0':
             case 'C':
+                r = 1;
+                g = 0;
+                b = 0;
                 printf("Pressed");
-                desenho_pio(desenho2, valor_led, pio, sm, r, g, b);
-                sleep_ms(100);
+                desenho_pio(leds_80, valor_led, pio, sm, r, g, b);
                 break;
             case '2':
             case '5':
