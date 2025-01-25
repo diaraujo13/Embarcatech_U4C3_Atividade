@@ -210,7 +210,7 @@ int main()
     bool ok;
     uint16_t i;
     uint32_t valor_led;
-    double r = 0.0, b = 0.0, g = 1.0;
+    double r = 0.0, b = 0.0, g = 0.0;
 
     ok = set_sys_clock_khz(128000, false);
 
