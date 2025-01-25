@@ -5,14 +5,11 @@
 #include "hardware/clocks.h"
 #include "hardware/adc.h"
 #include "pico/bootrom.h"
-
 #include "pio_matrix.pio.h"
 
-#define NUM_LEDS 25 // Número de LEDs na matriz
-#define OUT_PIN 7   // Pino de dados conectado à matriz
-
+#define NUM_LEDS 25
+#define OUT_PIN 7
 #define BUZZER_PIN 28
-
 #define KEYPAD_ROWS 4
 #define KEYPAD_COLS 4
 
@@ -20,18 +17,12 @@ const uint8_t row_pins[KEYPAD_ROWS] = {2, 3, 4, 5};
 const uint8_t column_pins[KEYPAD_COLS] = {6, 10, 8, 9};
 
 int PHYSICAL_LEDS_MAPPER[25] = {
-    24, 23, 22, 21, 20,  // i: 0 - 4
-    15, 16, 17, 18, 19,  // i: 5-9
-    14, 13, 12, 11, 10,  // i: 10-14
-     5,  6,  7,  8,  9,  // i: 15-19
-     4,  3,  2,  1,  0   // i: 20-24
+    24, 23, 22, 21, 20,
+    15, 16, 17, 18, 19,
+    14, 13, 12, 11, 10,
+     5,  6,  7,  8,  9,
+     4,  3,  2,  1,  0
 };
-
-// 0 1 2 3 4
-// 5 6 7 8 9
-// 10 11 12 13 14
-// 15 16 17 18 19
-// 20 21 22 23 24
 
 double off_matrix[25] = {
     0.0, 0.0, 0.0, 0.0, 0.0,
@@ -48,7 +39,6 @@ const int led_map[5][5] = {
     {15, 16, 17, 18, 19},
     {20, 21, 22, 23, 24}
 };
-
 
 const char keypad_map[KEYPAD_ROWS][KEYPAD_COLS] = {
     {'1', '2', '3', 'A'},
@@ -78,7 +68,6 @@ double desenho1[25] = {
     1.0, 1.0, 0.0, 1.0, 1.0,
     1.0, 1.0, 0.0, 1.0, 1.0};
 
-// vetor para criar imagem na matriz de led - 2
 double desenho2[25] = {
        1.0, 1.0, 1.0, 1.0, 1.0,
     1.0, 1.0, 1.0, 1.0, 1.0,
@@ -92,7 +81,6 @@ void turn_off_leds(PIO pio, uint sm);
 void turn_off_individual_led(PIO pio, uint sm, int led_position);
 void desenho_pio(double *desenho, PIO pio, uint sm, double r, double g, double b);
 void initialize_gpio();
-
 
 uint32_t matrix_rgb(float r, float g, float b)
 {
@@ -142,18 +130,14 @@ void clockwise_rotation_ani(PIO pio, uint sm) {
     desenho_pio(arrow_right, pio, sm, 0.0, 0.0, 0.0); 
 }
 
-
 void desenho_pio(double *desenho, PIO pio, uint sm, double r, double g, double b)
 {
-      //printf("renderizando");
       for (int i = 0; i < NUM_LEDS; i++) {
-        int led_matrix_location = PHYSICAL_LEDS_MAPPER[i]; // Aplica o mapeamento
-        //printf("i %d == posicao fisica => %d = %f \n", i, led_matrix_location, desenho[led_matrix_location] * r);
+        int led_matrix_location = PHYSICAL_LEDS_MAPPER[i];
         uint32_t valor_led = matrix_rgb(desenho[led_matrix_location] * r, desenho[led_matrix_location] * g, desenho[led_matrix_location] * b);
         pio_sm_put_blocking(pio, sm, valor_led);
     }
 }
-
 
 void turn_off_leds(PIO pio, uint sm) {
     uint32_t valor_led = 0;
@@ -166,7 +150,6 @@ void turn_off_individual_led(PIO pio, uint sm, int led_position) {
     uint32_t valor_led = 0;
     double r = 0.0, g = 1.0, b = 0.0;
 }
-
 
 void initialize_gpio()
 {
@@ -223,31 +206,25 @@ void buzzer_beep()
     }
 }
 
-
 int main()
 {
-
     PIO pio = pio0;
     bool ok;
     uint16_t i;
     uint32_t valor_led;
     double r = 0.0, b = 0.0, g = 0.0;
 
-    // coloca a frequência de clock para 128 MHz, facilitando a divisão pelo clack
     ok = set_sys_clock_khz(128000, false);
 
     printf("iniciando a transmissão PIO");
      if (ok) printf("clock set to %id\n", clock_get_hz(clk_sys));
 
-
     stdio_init_all();
     initialize_gpio();
 
-    // configurações da PIO
     uint sm = pio_claim_unused_sm(pio, true);
     uint offset = pio_add_program(pio, &pio_matrix_program);
     pio_matrix_program_init(pio, sm, offset, OUT_PIN);
-
 
     printf(">> Pressione uma tecla...\n");
 
@@ -309,10 +286,10 @@ int main()
 
                 break;
             }
-            sleep_ms(100); // debounce
+            sleep_ms(100);
         }
 
-        sleep_ms(50); // debounce
+        sleep_ms(50);
     }
 
     return 0;
