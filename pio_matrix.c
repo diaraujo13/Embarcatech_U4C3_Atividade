@@ -8,7 +8,7 @@
 
 #include "pio_matrix.pio.h"
 
-#define L (0.5) //Luminosidade dos leds
+#define L (0.8) //Luminosidade dos leds
 #define V (200) //Velocidade de transição animação tecla 5
 
 #define NUM_LEDS 25 // Número de LEDs na matriz
@@ -57,12 +57,6 @@ double desenho2[25] = {
     1.0, 1.0, 1.0, 1.0, 1.0,
     1.0, 1.0, 1.0, 1.0, 1.0
 };
-
-double apaga[25] = {0.0, 0.0, 0.0, 0.0, 0.0,
-                    0.0, 0.0, 0.0, 0.0, 0.0,
-                    0.0, 0.0, 0.0, 0.0, 0.0,
-                    0.0, 0.0, 0.0, 0.0, 0.0,
-                    0.0, 0.0, 0.0, 0.0, 0.0};
 
 double ddesenho1[25] = {0.0, 0.0, 0.0, 0.0, L,
                        0.0, 0.0, 0.0, 0.0, L,
@@ -119,24 +113,24 @@ void padrao1(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, do
     {
         if (i < 5)
         {
-            valor_led = matrix_rgb(desenho[24 - i], g = 0.0, b = 0.0);
+            valor_led = matrix_rgb(desenho[24 - i], r = 0.0, g = 0.0);
             pio_sm_put_blocking(pio, sm, valor_led);
         }else{
         if (i < 10)
         {
-            valor_led = matrix_rgb(r = 0.0, desenho[24 - i], b=0.0);
+            valor_led = matrix_rgb(b = 0.0, desenho[24 - i], g=0.0);
             pio_sm_put_blocking(pio, sm, valor_led);
             
         }else{
             if(i<15){
-                valor_led = matrix_rgb(r = 0.0, g=0.0, desenho[24 - i]);
+                valor_led = matrix_rgb(b = 0.0, r=0.0, desenho[24 - i]);
                 pio_sm_put_blocking(pio, sm, valor_led);
             }else{
                 if(i<20){
-                    valor_led = matrix_rgb( r= 0.0, desenho[24 - i], desenho[24 - i]);
+                    valor_led = matrix_rgb(b = 0.0, desenho[24 - i], desenho[24 - i]);
                     pio_sm_put_blocking(pio, sm, valor_led);
                 }else{
-                    valor_led = matrix_rgb(desenho[24 - i], desenho[24 - i] , b=0.0 );
+                    valor_led = matrix_rgb(desenho[24 - i], desenho[24 - i] , g=0.0 );
                     pio_sm_put_blocking(pio, sm, valor_led);
                 }
             }
@@ -148,7 +142,7 @@ void padrao2(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, do
 {
     for (int16_t i = 0; i < NUM_LEDS; i++)
     {
-            valor_led = matrix_rgb(r=0.0, desenho[24 - i], b=0.0);
+            valor_led = matrix_rgb(b=0.0, r=0.0, desenho[24 - i]);
             pio_sm_put_blocking(pio, sm, valor_led);
     }
 }    
@@ -252,38 +246,28 @@ int main()
                 break;
             case '2':
             case '5':
-                printf("Pressed");
                 for(int i=0;i<3;i++)
                 {
-                    padrao1(apaga, valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
                     padrao1(ddesenho1, valor_led, pio, sm, r, g, b);
-                    padrao1(apaga, valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
                     padrao1(ddesenho2, valor_led, pio, sm, r, g, b);
-                    padrao1(apaga, valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
                     padrao1(ddesenho3, valor_led, pio, sm, r, g, b);
-                    padrao1(apaga, valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
                     padrao1(ddesenho4, valor_led, pio, sm, r, g, b);
-                    padrao1(apaga, valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
                     padrao1(ddesenho5, valor_led, pio, sm, r, g, b);
-                    padrao1(apaga, valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
                     padrao1(ddesenho4, valor_led, pio, sm, r, g, b);
-                    padrao1(apaga, valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
                     padrao1(ddesenho3, valor_led, pio, sm, r, g, b);
-                    padrao1(apaga, valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
                     padrao1(ddesenho2, valor_led, pio, sm, r, g, b);
-                    padrao1(apaga, valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
                     padrao1(ddesenho1, valor_led, pio, sm, r, g, b);
-                    
                 }
+                padrao1(matrixOff, valor_led, pio, sm, r, g, b);
                 break;
             case '8':
             case 'B':
