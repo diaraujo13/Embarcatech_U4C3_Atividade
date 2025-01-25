@@ -214,7 +214,7 @@ int main()
     bool ok;
     uint16_t i;
     uint32_t valor_led;
-    double r = 0.0, b = 0.0, g = 1.0;
+    double r = 0.0, b = 0.0, g = 0.0;
 
     ok = set_sys_clock_khz(128000, false);
 
@@ -240,9 +240,10 @@ int main()
             switch (key)
             {
             case '1':
-                printf("Pressed");
+                /*printf("Pressed");
                 double *frames[] = {wave1, wave2, wave3, wave4, wave5,wave6, wave7, wave8, wave9, wave10};
 
+                desenho_pio(matrixOff, valor_led, pio, sm, 0, 0, 0);
                 r = 0;
                 g = 0;
                 b = 1;
@@ -253,8 +254,12 @@ int main()
                     desenho_pio(frames[i], valor_led, pio, sm, r, g, b);
                     sleep_ms(300);
                     }
-                }
-     
+                }*/
+                r = 0;
+                g = 0;
+                b = 1;
+                printf("Pressed");
+                desenho_pio(wave1, valor_led, pio, sm, r, g, b);
                 break;
             case '4':
             case '7':
