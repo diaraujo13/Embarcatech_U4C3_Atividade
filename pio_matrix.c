@@ -29,9 +29,6 @@ int PHYSICAL_LEDS_MAPPER[25] = {
     5, 6, 7, 8, 9,
     4, 3, 2, 1, 0};
 
-    
-
-
 const char keypad_map[KEYPAD_ROWS][KEYPAD_COLS] = {
     {'1', '2', '3', 'A'},
     {'4', '5', '6', 'B'},
@@ -126,7 +123,6 @@ void desenho_pio(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r
     }
 }
 
-
 void turn_off_leds(PIO pio, uint sm) {
     uint32_t valor_led = 0;
     double r = 0.0, g = 0.0, b = 0.0;
@@ -218,11 +214,16 @@ void clockwise_rotation_ani(PIO pio, uint sm)
     arrow_up[2] = arrow_up[6] = arrow_up[12] = arrow_up[17] = arrow_up[22] = 1.0;
     arrow_up[14] = arrow_up[8] = arrow_up[6] = arrow_up[10] = arrow_up[7] = 1.0;
 
-    double *arrows[4] = {arrow_right, arrow_down, arrow_left, arrow_up};
+    double arrow_cross[25] = {0};
+    arrow_cross[2] = arrow_cross[7] =  arrow_cross[17] = arrow_cross[22] = 0.6;
+    arrow_cross[14] = arrow_cross[13] = arrow_cross[12] = arrow_cross[10] = arrow_cross[11] = 1.0;
+
+
+    double *arrows[5] = {arrow_right, arrow_down, arrow_left, arrow_up, arrow_cross};
 
     for (int spin = 0; spin < 2; spin++)
     {
-        for (int frame = 0; frame < 4; frame++)
+        for (int frame = 0; frame < 5; frame++)
         {
             buzzer_beep();
             sleep_ms(50);
@@ -232,7 +233,7 @@ void clockwise_rotation_ani(PIO pio, uint sm)
                 sleep_ms(50);
             }
             desenho_pio_anim(arrows[frame], pio, sm, 0.0, 0.0, 0.0);
-            sleep_ms(150);
+            sleep_ms(100);
         }
     }
 
@@ -242,6 +243,7 @@ void clockwise_rotation_ani(PIO pio, uint sm)
     }
     desenho_pio_anim(arrow_right, pio, sm, 0.0, 0.0, 0.0);
 }
+
 
 void initialize_gpio()
 {
