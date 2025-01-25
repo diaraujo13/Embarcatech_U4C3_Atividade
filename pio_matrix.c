@@ -7,6 +7,9 @@
 #include "pico/bootrom.h"
 #include "pio_matrix.pio.h"
 
+#define L (0.8) //Luminosidade dos leds
+#define V (200) //Velocidade de transição animação tecla 5
+
 #define NUM_LEDS 25
 #define OUT_PIN 7
 #define BUZZER_PIN 28
@@ -82,6 +85,36 @@ void turn_off_individual_led(PIO pio, uint sm, int led_position);
 void desenho_pio(double *desenho, PIO pio, uint sm, double r, double g, double b);
 void initialize_gpio();
 
+double ddesenho1[25] = {0.0, 0.0, 0.0, 0.0, L,
+                       0.0, 0.0, 0.0, 0.0, L,
+                       0.0, 0.0, 0.0, 0.0, L,
+                       0.0, 0.0, 0.0, 0.0, L,
+                       0.0, 0.0, 0.0, 0.0, L};
+
+double ddesenho2[25] = {0.0, 0.0, 0.0, L, 0.0,
+                       0.0, 0.0, 0.0, L, 0.0,
+                       0.0, 0.0, 0.0, L, 0.0,
+                       0.0, 0.0, 0.0, L, 0.0,
+                       0.0, 0.0, 0.0, L, 0.0};
+
+double ddesenho3[25] = {0.0, 0.0, L, 0.0, 0.0,
+                       0.0, 0.0, L, 0.0, 0.0,
+                       0.0, 0.0, L, 0.0, 0.0,
+                       0.0, 0.0, L, 0.0, 0.0,
+                       0.0, 0.0, L, 0.0, 0.0};
+
+double ddesenho4[25] = {0.0, L, 0.0, 0.0, 0.0,
+                       0.0, L, 0.0, 0.0, 0.0,
+                       0.0, L, 0.0, 0.0, 0.0,
+                       0.0, L, 0.0, 0.0, 0.0,
+                       0.0, L, 0.0, 0.0, 0.0};
+
+double ddesenho5[25] = {L, 0.0, 0.0, 0.0, 0.0,
+                       L, 0.0, 0.0, 0.0, 0.0,
+                       L, 0.0, 0.0, 0.0, 0.0,
+                       L, 0.0, 0.0, 0.0, 0.0,
+                       L, 0.0, 0.0, 0.0, 0.0};
+
 uint32_t matrix_rgb(float r, float g, float b)
 {
     unsigned char R, G, B;
@@ -137,7 +170,61 @@ void desenho_pio(double *desenho, PIO pio, uint sm, double r, double g, double b
         uint32_t valor_led = matrix_rgb(desenho[led_matrix_location] * r, desenho[led_matrix_location] * g, desenho[led_matrix_location] * b);
         pio_sm_put_blocking(pio, sm, valor_led);
     }
+}    
+
+
+void turn_off_leds(PIO pio, uint sm) {
+    uint32_t valor_led = 0;
+    double r = 0.0, g = 0.0, b = 0.0;
+    desenho_pio(off_matrix, pio, sm, r, g, b);
 }
+
+void turn_off_individual_led(PIO pio, uint sm, int led_position) {
+    printf("led %d", led_position);
+    uint32_t valor_led = 0;
+    double r = 0.0, g = 1.0, b = 0.0;
+}
+void padrao1(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b)
+{
+
+    for (int16_t i = 0; i < NUM_LEDS; i++)
+    {
+        if (i < 5)
+        {
+            valor_led = matrix_rgb(desenho[24 - i], r = 0.0, g = 0.0);
+            pio_sm_put_blocking(pio, sm, valor_led);
+        }else{
+        if (i < 10)
+        {
+            valor_led = matrix_rgb(b = 0.0, desenho[24 - i], g=0.0);
+            pio_sm_put_blocking(pio, sm, valor_led);
+            
+        }else{
+            if(i<15){
+                valor_led = matrix_rgb(b = 0.0, r=0.0, desenho[24 - i]);
+                pio_sm_put_blocking(pio, sm, valor_led);
+            }else{
+                if(i<20){
+                    valor_led = matrix_rgb(b = 0.0, desenho[24 - i], desenho[24 - i]);
+                    pio_sm_put_blocking(pio, sm, valor_led);
+                }else{
+                    valor_led = matrix_rgb(desenho[24 - i], desenho[24 - i] , g=0.0 );
+                    pio_sm_put_blocking(pio, sm, valor_led);
+                }
+            }
+        }
+        }
+    }
+}
+void padrao2(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b)
+{
+    for (int16_t i = 0; i < NUM_LEDS; i++)
+    {
+            valor_led = matrix_rgb(b=0.0, r=0.0, desenho[24 - i]);
+            pio_sm_put_blocking(pio, sm, valor_led);
+    }
+}    
+
 
 void turn_off_leds(PIO pio, uint sm) {
     uint32_t valor_led = 0;
@@ -213,6 +300,7 @@ int main()
     uint16_t i;
     uint32_t valor_led;
     double r = 0.0, b = 0.0, g = 0.0;
+    double r = 0.0, b = 0.0, g = 0.0;
 
     ok = set_sys_clock_khz(128000, false);
 
@@ -250,6 +338,29 @@ int main()
                 break;
             case '2':
             case '5':
+                for(int i=0;i<3;i++)
+                {
+                    sleep_ms(V);
+                    padrao1(ddesenho1, valor_led, pio, sm, r, g, b);
+                    sleep_ms(V);
+                    padrao1(ddesenho2, valor_led, pio, sm, r, g, b);
+                    sleep_ms(V);
+                    padrao1(ddesenho3, valor_led, pio, sm, r, g, b);
+                    sleep_ms(V);
+                    padrao1(ddesenho4, valor_led, pio, sm, r, g, b);
+                    sleep_ms(V);
+                    padrao1(ddesenho5, valor_led, pio, sm, r, g, b);
+                    sleep_ms(V);
+                    padrao1(ddesenho4, valor_led, pio, sm, r, g, b);
+                    sleep_ms(V);
+                    padrao1(ddesenho3, valor_led, pio, sm, r, g, b);
+                    sleep_ms(V);
+                    padrao1(ddesenho2, valor_led, pio, sm, r, g, b);
+                    sleep_ms(V);
+                    padrao1(ddesenho1, valor_led, pio, sm, r, g, b);
+                }
+                padrao1(matrixOff, valor_led, pio, sm, r, g, b);
+                break;
             case '8':
             case 'B':
                 r = 0;
@@ -267,6 +378,7 @@ int main()
                     desenho_pio(desenho1,  pio, sm, r, g, b);
                 break;
             case 'D':
+                padrao2(matrixOn, valor_led, pio, sm, r, g, b);
             printf("Pressed");
                 r = 0;
                 g = 0;
