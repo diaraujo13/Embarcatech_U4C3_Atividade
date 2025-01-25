@@ -115,7 +115,7 @@ void desenho_pio(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r
 void padrao1(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b)
 {
 
-    for (int16_t i = 0; i < NUM_PIXELS; i++)
+    for (int16_t i = 0; i < NUM_LEDS; i++)
     {
         if (i < 5)
         {
@@ -146,7 +146,7 @@ void padrao1(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, do
 }
 void padrao2(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b)
 {
-    for (int16_t i = 0; i < NUM_PIXELS; i++)
+    for (int16_t i = 0; i < NUM_LEDS; i++)
     {
             valor_led = matrix_rgb(b=0.0, r=0.0, desenho[24 - i]);
             pio_sm_put_blocking(pio, sm, valor_led);
