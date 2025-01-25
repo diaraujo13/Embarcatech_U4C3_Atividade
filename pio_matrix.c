@@ -19,6 +19,37 @@
 const uint8_t row_pins[KEYPAD_ROWS] = {2, 3, 4, 5};
 const uint8_t column_pins[KEYPAD_COLS] = {6, 10, 8, 9};
 
+int PHYSICAL_LEDS_MAPPER[25] = {
+    24, 23, 22, 21, 20,  // i: 0 - 4
+    15, 16, 17, 18, 19,  // i: 5-9
+    14, 13, 12, 11, 10,  // i: 10-14
+     5,  6,  7,  8,  9,  // i: 15-19
+     4,  3,  2,  1,  0   // i: 20-24
+};
+
+// 0 1 2 3 4
+// 5 6 7 8 9
+// 10 11 12 13 14
+// 15 16 17 18 19
+// 20 21 22 23 24
+
+double off_matrix[25] = {
+    0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0
+};
+
+const int led_map[5][5] = {
+    {0, 1, 2, 3, 4},
+    {5, 6, 7, 8, 9},
+    {10, 11, 12, 13, 14},
+    {15, 16, 17, 18, 19},
+    {20, 21, 22, 23, 24}
+};
+
+
 const char keypad_map[KEYPAD_ROWS][KEYPAD_COLS] = {
     {'1', '2', '3', 'A'},
     {'4', '5', '6', 'B'},
@@ -41,12 +72,13 @@ double matrixOff[25] = {
     0.0, 0.0, 0.0, 0.0, 0.0 
 };
 double desenho1[25] = {
-     1.0, 1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0, 1.0};
+     1.0, 1.0, 0.0, 1.0, 1.0,
+    1.0, 1.0, 0.0, 1.0, 1.0,
+    1.0, 1.0, 0.0, 1.0, 1.0,
+    1.0, 1.0, 0.0, 1.0, 1.0,
+    1.0, 1.0, 0.0, 1.0, 1.0};
 
+// vetor para criar imagem na matriz de led - 2
 double desenho2[25] = {
        1.0, 1.0, 1.0, 1.0, 1.0,
     1.0, 1.0, 1.0, 1.0, 1.0,
@@ -54,6 +86,13 @@ double desenho2[25] = {
     1.0, 1.0, 1.0, 1.0, 1.0,
     1.0, 1.0, 1.0, 1.0, 1.0
 };
+
+uint32_t matrix_rgb(float r, float g, float b);
+void turn_off_leds(PIO pio, uint sm);
+void turn_off_individual_led(PIO pio, uint sm, int led_position);
+void desenho_pio(double *desenho, PIO pio, uint sm, double r, double g, double b);
+void initialize_gpio();
+
 
 uint32_t matrix_rgb(float r, float g, float b)
 {
@@ -65,14 +104,69 @@ uint32_t matrix_rgb(float r, float g, float b)
     return (G << 24) | (R << 16) | (B << 8);
 }
 
-void desenho_pio(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b)
+void clockwise_rotation_ani(PIO pio, uint sm) {
+    double arrow_right[25] = {0};
+    arrow_right[2] = arrow_right[8] = arrow_right[10] = arrow_right[18] = arrow_right[22] = 1.0;
+    arrow_right[11] = arrow_right[12] = arrow_right[13] = arrow_right[14] = 1.0;
+
+    double arrow_down[25] = {0};
+    arrow_down[2] = arrow_down[7] = arrow_down[12] = arrow_down[17] = arrow_down[22] = 1.0;
+    arrow_down[16] = arrow_down[14] = arrow_down[10] = arrow_down[18] = 1.0;
+
+    double arrow_left[25] = {0};
+    arrow_left[2] = arrow_left[6] = arrow_left[10] = arrow_left[16] = arrow_left[22] = 1.0;
+    arrow_left[11] = arrow_left[12] = arrow_left[13] = arrow_left[14] = 1.0;
+
+    double arrow_up[25] = {0};
+    arrow_up[2] = arrow_up[6] = arrow_up[12] = arrow_up[17] = arrow_up[22] = 1.0;
+    arrow_up[14] = arrow_up[8] = arrow_up[6] = arrow_up[10] = arrow_up[7] = 1.0;
+
+    double* arrows[4] = {arrow_right, arrow_down, arrow_left, arrow_up};
+
+    for (int spin = 0; spin < 2; spin++) {
+        for (int frame = 0; frame < 4; frame++) {
+            buzzer_beep();
+              sleep_ms(50); 
+            for (int j = 0; j <= 10; j++) {
+                desenho_pio(arrows[frame], pio, sm, 1, 0, 0);
+                sleep_ms(50); 
+            }
+            desenho_pio(arrows[frame], pio, sm, 0.0, 0.0, 0.0);
+            sleep_ms(150); 
+        }
+    }
+
+    for (int i = 0; i < 25; i++) {
+        arrow_right[i] = 0.0;
+    }
+    desenho_pio(arrow_right, pio, sm, 0.0, 0.0, 0.0); 
+}
+
+
+void desenho_pio(double *desenho, PIO pio, uint sm, double r, double g, double b)
 {
-    for (int16_t i = 0; i < NUM_LEDS; i++)
-    {
-        valor_led = matrix_rgb(r, g, b);
+      //printf("renderizando");
+      for (int i = 0; i < NUM_LEDS; i++) {
+        int led_matrix_location = PHYSICAL_LEDS_MAPPER[i]; // Aplica o mapeamento
+        //printf("i %d == posicao fisica => %d = %f \n", i, led_matrix_location, desenho[led_matrix_location] * r);
+        uint32_t valor_led = matrix_rgb(desenho[led_matrix_location] * r, desenho[led_matrix_location] * g, desenho[led_matrix_location] * b);
         pio_sm_put_blocking(pio, sm, valor_led);
     }
 }
+
+
+void turn_off_leds(PIO pio, uint sm) {
+    uint32_t valor_led = 0;
+    double r = 0.0, g = 0.0, b = 0.0;
+    desenho_pio(off_matrix, pio, sm, r, g, b);
+}
+
+void turn_off_individual_led(PIO pio, uint sm, int led_position) {
+    printf("led %d", led_position);
+    uint32_t valor_led = 0;
+    double r = 0.0, g = 1.0, b = 0.0;
+}
+
 
 void initialize_gpio()
 {
@@ -129,6 +223,7 @@ void buzzer_beep()
     }
 }
 
+
 int main()
 {
 
@@ -136,8 +231,9 @@ int main()
     bool ok;
     uint16_t i;
     uint32_t valor_led;
-    double r = 0.0, b = 0.0, g = 1.0;
+    double r = 0.0, b = 0.0, g = 0.0;
 
+    // coloca a frequência de clock para 128 MHz, facilitando a divisão pelo clack
     ok = set_sys_clock_khz(128000, false);
 
     printf("iniciando a transmissão PIO");
@@ -147,9 +243,11 @@ int main()
     stdio_init_all();
     initialize_gpio();
 
+    // configurações da PIO
     uint sm = pio_claim_unused_sm(pio, true);
     uint offset = pio_add_program(pio, &pio_matrix_program);
     pio_matrix_program_init(pio, sm, offset, OUT_PIN);
+
 
     printf(">> Pressione uma tecla...\n");
 
@@ -162,44 +260,55 @@ int main()
             switch (key)
             {
             case '1':
+              clockwise_rotation_ani(pio, sm);
+            break;
             case '4':
+            break;
             case '7':
             case '0':
             case 'C':
                 printf("Pressed");
-                desenho_pio(desenho2, valor_led, pio, sm, r, g, b);
+                desenho_pio(desenho2,  pio, sm, r, g, b);
                 sleep_ms(100);
                 break;
             case '2':
             case '5':
             case '8':
             case 'B':
-                desenho_pio(desenho1, valor_led, pio, sm, r, g, b);
+                r = 0;
+                g = 0;
+                b = 1;
+                desenho_pio(matrixOn,  pio, sm, r, g, b);
                 break;
             case 'A':
             case '3':
             case '6':
             case '9':
-                desenho_pio(desenho1, valor_led, pio, sm, r, g, b);
+              r = 1;
+              g = 0.4;
+              b = 0;
+                    desenho_pio(desenho1,  pio, sm, r, g, b);
                 break;
             case 'D':
             printf("Pressed");
                 r = 0;
                 g = 0;
                 b = 1;
-                desenho_pio(desenho1, valor_led, pio, sm, r, g, b);
+                desenho_pio(matrixOn,  pio, sm, r, g, b);
+
                 break;
             case '#':
-              buzzer_beep();
                 r =1;
                 g = 0;
                 b = 0;
-                desenho_pio(desenho1, valor_led, pio, sm, r, g, b);
+                desenho_pio(desenho1,  pio, sm, r, g, b);
+
                 break;
             case '*':
+              turn_off_leds(pio, sm);
+
                 break;
             }
-            
             sleep_ms(100); // debounce
         }
 
