@@ -58,12 +58,6 @@ double desenho2[25] = {
     1.0, 1.0, 1.0, 1.0, 1.0
 };
 
-double apaga[25] = {0.0, 0.0, 0.0, 0.0, 0.0,
-                    0.0, 0.0, 0.0, 0.0, 0.0,
-                    0.0, 0.0, 0.0, 0.0, 0.0,
-                    0.0, 0.0, 0.0, 0.0, 0.0,
-                    0.0, 0.0, 0.0, 0.0, 0.0};
-
 double ddesenho1[25] = {0.0, 0.0, 0.0, 0.0, L,
                        0.0, 0.0, 0.0, 0.0, L,
                        0.0, 0.0, 0.0, 0.0, L,
@@ -273,7 +267,7 @@ int main()
                     sleep_ms(V);
                     padrao1(ddesenho1, valor_led, pio, sm, r, g, b);
                 }
-                padrao1(apaga, valor_led, pio, sm, r, g, b);
+                padrao1(matrixOff, valor_led, pio, sm, r, g, b);
                 break;
             case '8':
             case 'B':
