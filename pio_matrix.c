@@ -60,8 +60,8 @@ double desenho2[25] = {
     1.0, 1.0, 1.0, 1.0, 1.0,
     1.0, 1.0, 1.0, 1.0, 1.0,
     1.0, 1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0, 1.0};
-
+    1.0, 1.0, 1.0, 1.0, 1.0
+};
 double ddesenho1[25] = {0.0, 0.0, 0.0, 0.0, L,
                         0.0, 0.0, 0.0, 0.0, L,
                         0.0, 0.0, 0.0, 0.0, L,
@@ -92,6 +92,81 @@ double ddesenho5[25] = {L, 0.0, 0.0, 0.0, 0.0,
                         L, 0.0, 0.0, 0.0, 0.0,
                         L, 0.0, 0.0, 0.0, 0.0};
 
+//LEDs vermelhos em 80%
+double leds_80[25]={0.8, 0.8, 0.8, 0.8, 0.8,
+                    0.8, 0.8, 0.8, 0.8, 0.8,
+                    0.8, 0.8, 0.8, 0.8, 0.8,
+                    0.8, 0.8, 0.8, 0.8, 0.8,
+                    0.8, 0.8, 0.8, 0.8, 0.8};
+//Animação: Wave
+double wave1[25]={0.0, 0.0, 0.0, 0.0, 0.0,
+                  0.0, 0.0, 0.0, 0.0, 0.0,
+                  0.0, 0.0, 0.0, 0.0, 0.0,
+                  0.5, 0.5, 0.5, 0.5, 0.5,
+                  0.5, 0.5, 0.5, 0.5, 0.5};
+double wave2[25]={
+    0.5, 0.0, 0.0, 0.0, 0.0,
+    0.5, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0,
+    0.5, 0.5, 0.5, 0.5, 0.5,
+    0.5, 0.5, 0.5, 0.5, 0.5
+};
+double wave3[25]={
+    0.5, 0.5, 0.0, 0.0, 0.0,
+    0.5, 0.5, 0.0, 0.0, 0.0,
+    0.5, 0.0, 0.0, 0.0, 0.0,
+    0.5, 0.5, 0.5, 0.5, 0.5,
+    0.5, 0.5, 0.5, 0.5, 0.5
+};
+double wave4[25]={
+    0.5, 0.5, 0.5, 0.0, 0.0,
+    0.5, 0.5, 0.5, 0.0, 0.0,
+    0.5, 0.5, 0.0, 0.0, 0.0,
+    0.5, 0.5, 0.5, 0.5, 0.5,
+    0.5, 0.5, 0.5, 0.5, 0.5
+};
+double wave5[25]={
+    0.0, 0.5, 0.5, 0.5, 0.0,
+    0.5, 0.5, 0.5, 0.5, 0.0,
+    0.5, 0.5, 0.5, 0.0, 0.0,
+    0.5, 0.5, 0.5, 0.5, 0.5,
+    0.5, 0.5, 0.5, 0.5, 0.5
+};
+double wave6[25]={
+    0.0, 0.0, 0.5, 0.5, 0.5,
+    0.0, 0.5, 0.5, 0.5, 0.5,
+    0.5, 0.5, 0.5, 0.5, 0.0,
+    0.5, 0.5, 0.5, 0.5, 0.5,
+    0.5, 0.5, 0.5, 0.5, 0.5
+};
+double wave7[25]={
+    0.0, 0.0, 0.0, 0.5, 0.5,
+    0.0, 0.0, 0.5, 0.5, 0.5,
+    0.0, 0.5, 0.5, 0.5, 0.5,
+    0.5, 0.5, 0.5, 0.5, 0.5,
+    0.5, 0.5, 0.5, 0.5, 0.5
+};
+double wave8[25]={
+    0.0, 0.0, 0.0, 0.0, 0.5,
+    0.0, 0.0, 0.0, 0.5, 0.5,
+    0.0, 0.0, 0.5, 0.5, 0.5,
+    0.5, 0.5, 0.5, 0.5, 0.5,
+    0.5, 0.5, 0.5, 0.5, 0.5
+};
+double wave9[25]={
+    0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.5,
+    0.0, 0.0, 0.0, 0.5, 0.5,
+    0.5, 0.5, 0.5, 0.5, 0.5,
+    0.5, 0.5, 0.5, 0.5, 0.5
+};
+double wave10[25]={
+    0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.0,
+    0.0, 0.0, 0.0, 0.0, 0.5,
+    0.5, 0.5, 0.5, 0.5, 0.5,
+    0.5, 0.5, 0.5, 0.5, 0.5
+};
 void buzzer_beep();
 void initialize_gpio();
 char read_keypad();
@@ -185,6 +260,15 @@ void padrao2(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, do
         pio_sm_put_blocking(pio, sm, valor_led);
     }
 }
+void padrao3(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b)
+{
+    for (int16_t i = 0; i < NUM_LEDS; i++)
+    {
+        valor_led = matrix_rgb(0.0, 0.0, desenho[24 - i]);
+        pio_sm_put_blocking(pio, sm, valor_led);
+    }
+}
+
 
 void desenho_pio_anim(double *desenho, PIO pio, uint sm, double r, double g, double b)
 {
@@ -338,14 +422,27 @@ int main()
                 clockwise_rotation_ani(pio, sm);
                 break;
             case '1':
-
+                printf("Pressed");
+                double *frames[] = {wave1, wave2, wave3, wave4, wave5,wave6, wave7, wave8, wave9, wave10};
+                while (true)
+                {
+                    for (i = 0; i < 10; i++)
+                    {
+                    padrao3(frames[i], valor_led, pio, sm, r, g, b);
+                    sleep_ms(V);
+                    }
+                }
+                //printf("Pressed");
+                //padrao3(wave1, valor_led, pio, sm, r, g, b);
                 break;
             case '4':
             case '7':
             case 'C':
+                r = 1;
+                g = 0;
+                b = 0;
                 printf("Pressed");
-                desenho_pio(desenho2, valor_led, pio, sm, r, g, b);
-                sleep_ms(100);
+                desenho_pio(leds_80, valor_led, pio, sm, r, g, b);
                 break;
             case '2':
             case '5':
@@ -379,6 +476,11 @@ int main()
                 desenho_pio(desenho1, valor_led, pio, sm, r, g, b);
                 break;
             case 'A':
+                r = 0;
+                g = 0;
+                b = 0;
+                desenho_pio(matrixOff, valor_led, pio, sm, r, g, b);
+                break;         
             case '3':
             case '6':
                 sm = 0;
