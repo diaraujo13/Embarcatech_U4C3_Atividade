@@ -257,7 +257,8 @@ void padrao3(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, do
 {
     for (int16_t i = 0; i < NUM_LEDS; i++)
     {
-        valor_led = matrix_rgb(0.0, 0.0, desenho[24 - i]);
+        int led_matrix_location = PHYSICAL_LEDS_MAPPER[i];
+        valor_led = matrix_rgb(0.0, 0.0, desenho[led_matrix_location]);
         pio_sm_put_blocking(pio, sm, valor_led);
     }
 }
@@ -416,7 +417,7 @@ int main()
                 break;
             case '1':
                 printf("Pressed");
-                /*double *frames[] = {wave1, wave2, wave3, wave4, wave5,wave6, wave7, wave8, wave9, wave10};
+                double *frames[] = {wave1, wave2, wave3, wave4, wave5,wave6, wave7, wave8, wave9, wave10};
                 while (true)
                 {
                     for (i = 0; i < 10; i++)
@@ -424,17 +425,7 @@ int main()
                     padrao3(frames[i], valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
                     }
-                }*/
-                padrao3(wave1, valor_led, pio, sm, r, g, b);
-                sleep_ms(V);
-                padrao3(wave2, valor_led, pio, sm, r, g, b);
-                sleep_ms(V);
-                padrao3(wave3, valor_led, pio, sm, r, g, b);
-                sleep_ms(V);
-                padrao3(wave4, valor_led, pio, sm, r, g, b);
-                sleep_ms(V);
-                padrao3(wave5, valor_led, pio, sm, r, g, b);
-                sleep_ms(V);
+                }
                 //Linha 2 com animação invertida
                 break;
             case '4':
