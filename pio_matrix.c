@@ -417,15 +417,12 @@ int main()
                 break;
             case '1':
                 printf("Pressed");
-                double *frames[] = {wave1, wave2, wave3, wave4, wave5,wave6, wave7, wave8, wave9, wave10};
-                while (true)
-                {
-                    for (i = 0; i < 10; i++)
+                double *frames[] = {wave1, wave2, wave3, wave4, wave5,wave6, wave7, wave8, wave9, wave10, wave1};
+                    for (i = 0; i < 11; i++)
                     {
                     padrao3(frames[i], valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
                     }
-                }
                 //Linha 2 com animação invertida
                 break;
             case '4':
