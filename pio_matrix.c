@@ -92,6 +92,41 @@ double ddesenho5[25] = {L, 0.0, 0.0, 0.0, 0.0,
                         L, 0.0, 0.0, 0.0, 0.0,
                         L, 0.0, 0.0, 0.0, 0.0};
 
+double seta1[25] =   {0.0, 0.0, 0.3, 0.0, 0.0,
+                        0.0, 0.3, 0.3, 0.3, 0.0, 
+                        0.3, 0.0, 0.3, 0.0, 0.3,
+                        0.0, 0.0, 0.3, 0.0, 0.0,
+                        0.0, 0.0, 0.3, 0.0, 0.0};
+
+double seta2[25] =   {0.0, 0.3, 0.3, 0.3, 0.0,
+                        0.3, 0.0, 0.3, 0.0, 0.3, 
+                        0.0, 0.0, 0.3, 0.0, 0.0,
+                        0.0, 0.0, 0.3, 0.0, 0.0,
+                        0.0, 0.0, 0.0, 0.0, 0.0};
+            
+double seta3[25] =   {0.3, 0.0, 0.3, 0.0, 0.3,
+                        0.0, 0.0, 0.3, 0.0, 0.0, 
+                        0.0, 0.0, 0.3, 0.0, 0.0,
+                        0.0, 0.0, 0.0, 0.0, 0.0,
+                        0.0, 0.0, 0.3, 0.0, 0.0};
+
+double seta4[25] =   {0.0, 0.0, 0.3, 0.0, 0.0,
+                        0.0, 0.0, 0.3, 0.0, 0.0, 
+                        0.0, 0.0, 0.0, 0.0, 0.0,
+                        0.0, 0.0, 0.3, 0.0, 0.0,
+                        0.0, 0.3, 0.3, 0.3, 0.0};            
+
+double seta5[25] =   {0.0, 0.0, 0.3, 0.0, 0.0,
+                        0.0, 0.0, 0.0, 0.0, 0.0, 
+                        0.0, 0.0, 0.3, 0.0, 0.0,
+                        0.0, 0.3, 0.3, 0.3, 0.0,
+                        0.3, 0.0, 0.3, 0.0, 0.3};
+
+double seta6[25] =   {0.0, 0.0, 0.0, 0.0, 0.0,
+                        0.0, 0.0, 0.3, 0.0, 0.0, 
+                        0.0, 0.3, 0.3, 0.3, 0.0,
+                        0.3, 0.0, 0.3, 0.0, 0.3,
+                        0.0, 0.0, 0.3, 0.0, 0.0};
 //LEDs vermelhos em 80%
 double leds_80[25]={0.8, 0.8, 0.8, 0.8, 0.8,
                     0.8, 0.8, 0.8, 0.8, 0.8,
@@ -168,6 +203,8 @@ void clockwise_rotation_ani(PIO pio, uint sm);
 void padrao1(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b);
 void padrao2(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b);
 void padrao3(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b);
+void padrao4(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b);
+void padrao5(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b);
 void turn_off_leds(PIO pio, uint sm);
 void turn_off_individual_led(PIO pio, uint sm, int led_position);
 
@@ -202,7 +239,6 @@ void turn_off_individual_led(PIO pio, uint sm, int led_position) {
     uint32_t valor_led = 0;
     double r = 0.0, g = 1.0, b = 0.0;
 }
-
 
 void padrao1(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b)
 {
@@ -263,6 +299,23 @@ void padrao3(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, do
     }
 }
 
+void padrao4(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b)
+{
+    for (int16_t i = 0; i < NUM_LEDS; i++)
+    {
+        valor_led = matrix_rgb(desenho[24 - i], desenho[24 - i], desenho[24 - i]);
+        pio_sm_put_blocking(pio, sm, valor_led);
+    }
+}
+
+void desenho_pio(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b)
+{
+    for (int16_t i = 0; i < NUM_LEDS; i++)
+    {
+        valor_led = matrix_rgb(r=0.0,g=0.0,desenho[24 - i]);
+        pio_sm_put_blocking(pio, sm, valor_led);
+    }
+}
 
 void desenho_pio_anim(double *desenho, PIO pio, uint sm, double r, double g, double b)
 {
@@ -426,6 +479,21 @@ int main()
                 //Linha 2 com animação invertida
                 break;
             case '4':
+                for(int i=0;i<3;i++){    
+                    padrao5(seta1, valor_led, pio, sm, r, g, b);
+                    sleep_ms(200);
+                    padrao5(seta2, valor_led, pio, sm, r, g, b);
+                    sleep_ms(200);
+                    padrao5(seta3, valor_led, pio, sm, r, g, b);
+                    sleep_ms(200);
+                    padrao5(seta4, valor_led, pio, sm, r, g, b);
+                    sleep_ms(200);
+                    padrao5(seta5, valor_led, pio, sm, r, g, b);
+                    sleep_ms(200);
+                    padrao5(seta6, valor_led, pio, sm, r, g, b);
+                    sleep_ms(200);
+                }
+            break;
             case '7':
             case 'C':
                 r = 1;
@@ -486,11 +554,7 @@ int main()
                 padrao2(matrixOn, valor_led, pio, sm, r, g, b);
                 break;
             case '#':
-                buzzer_beep();
-                r = 1;
-                g = 0;
-                b = 0;
-                desenho_pio(desenho1, valor_led, pio, sm, r, g, b);
+                padrao4(matrixOn, valor_led, pio, sm, r, g, b);
                 break;
             case '*':
                 break;
