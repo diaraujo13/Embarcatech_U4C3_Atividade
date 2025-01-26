@@ -10,9 +10,12 @@ O usuário deve, através do teclado matricial, ativar as funções elaboradas. 
 
 | Tecla | Função                  |
 |-------|--------------------------|
+| 0     | Animação de setas + sinal sonoro |
 | 1     | Animação de onda         |
 | 2     | Animação de linha vertical |
-| 0     | Animação de setas + sinal sonoro |
+| 3     | Animação  |
+| 4     | Animação seta  |
+| 5     | Animação de linha vertical |
 | A     | Desliga todos os LEDs    |
 | B     | Liga todos os LEDs na cor azul com intensidade máxima |
 | C     | Liga todos os LEDs na cor vermelha com 80% da intensidade máxima |
