@@ -35,6 +35,32 @@ const char keypad_map[KEYPAD_ROWS][KEYPAD_COLS] = {
     {'7', '8', '9', 'C'},
     {'*', '0', '#', 'D'}};
 
+// Matriz para o botão 3
+double drawing1[25] =   {0.0, 0.0, 0.0, 0.0, 0.0,
+                        0.0, 0.0, 0.0, 0.0, 0.0, 
+                        0.0, 0.0, 0.0, 0.0, 0.0,
+                        0.0, 0.0, 0.0, 0.0, 0.0,
+                        0.0, 0.0, 0.0, 0.0, 0.0};
+
+double drawing2[25] =   {0.0, 0.0, 0.0, 0.0, 0.0,
+                        0.0, 0.0, 0.0, 0.0, 0.0, 
+                        0.0, 0.0, 1.0, 0.0, 0.0,
+                        0.0, 0.0, 0.0, 0.0, 0.0,
+                        0.0, 0.0, 0.0, 0.0, 0.0};
+
+double drawing3[25] =   {0.0, 0.0, 0.0, 0.0, 0.0,
+                        0.0, 1.0, 1.0, 1.0, 0.0, 
+                        0.0, 1.0, 0.0, 1.0, 0.0,
+                        0.0, 1.0, 1.0, 1.0, 0.0,
+                        0.0, 0.0, 0.0, 0.0, 0.0};
+
+double drawing4[25] =   {1.0, 1.0, 1.0, 1.0, 1.0,
+                        1.0, 0.0, 0.0, 0.0, 1.0, 
+                        1.0, 0.0, 0.0, 0.0, 1.0,
+                        1.0, 0.0, 0.0, 0.0, 1.0,
+                        1.0, 1.0, 1.0, 1.0, 1.0};
+// Fim matriz botão 3
+
 double matrixOn[25] = {
     1.0, 1.0, 1.0, 1.0, 1.0,
     1.0, 1.0, 1.0, 1.0, 1.0,
@@ -205,6 +231,8 @@ void padrao2(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, do
 void padrao3(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b);
 void padrao4(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b);
 void padrao5(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b);
+
+void draw_animation(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b);
 void turn_off_leds(PIO pio, uint sm);
 void turn_off_individual_led(PIO pio, uint sm, int led_position);
 
@@ -308,7 +336,7 @@ void padrao4(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, do
     }
 }
 
-void desenho_pio(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b)
+void padrao5(double *desenho, uint32_t valor_led, PIO pio, uint sm, double r, double g, double b)
 {
     for (int16_t i = 0; i < NUM_LEDS; i++)
     {
@@ -431,6 +459,25 @@ void buzzer_beep()
     }
 }
 
+// Função para fazer animação do botão 3
+void draw_animation(double *drawing, uint32_t led_value, PIO pio, uint sm, double r, double g, double b){
+
+    for (int16_t i = 0; i < NUM_LEDS; i++)
+    {
+        if (i % 2==0)
+        {
+            led_value = matrix_rgb(drawing[24 - i], r = 0.0, g = 0.0);
+            pio_sm_put_blocking(pio, sm, led_value);
+
+        }
+        else
+        {
+            led_value = matrix_rgb(b = 0.0, drawing[24 - i], g = 0.0);
+            pio_sm_put_blocking(pio, sm, led_value);
+        }
+    }
+} //Fim draw_animation
+
 int main()
 {
 
@@ -503,6 +550,7 @@ int main()
                 desenho_pio(leds_80, valor_led, pio, sm, r, g, b);
                 break;
             case '2':
+                break;
             case '5':
                 for (int i = 0; i < 3; i++)
                 {
@@ -540,6 +588,26 @@ int main()
                 desenho_pio(matrixOff, valor_led, pio, sm, r, g, b);
                 break;         
             case '3':
+                // Animação para o botão 3
+                int count = 0;
+
+                while(count < 10)
+                {
+                    draw_animation(drawing1, valor_led, pio, sm, r, g, b);
+                    sleep_ms(200);
+                    draw_animation(drawing2, valor_led, pio, sm, r, g, b);
+                    sleep_ms(200);
+                    draw_animation(drawing3, valor_led, pio, sm, r, g, b);
+                    sleep_ms(200);
+                    draw_animation(drawing4, valor_led, pio, sm, r, g, b);
+                    sleep_ms(200);
+
+                    count++;
+                }
+
+                draw_animation(drawing1, valor_led, pio, sm, r, g, b);
+
+                break;
             case '6':
                 sm = 0;
                 r = 0.0;
