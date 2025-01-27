@@ -8,8 +8,8 @@
 
 #include "pio_matrix.pio.h"
 
-#define L (0.8) // Luminosidade dos leds
-#define V (200) // Velocidade de transição animação tecla 5
+#define L (0.6) // Luminosidade dos leds
+#define V (150) // Velocidade de transição animação tecla 5
 
 #define NUM_LEDS 25 // Número de LEDs na matriz
 #define OUT_PIN 7   // Pino de dados conectado à matriz
@@ -94,29 +94,41 @@ double ddesenho1[25] = {0.0, 0.0, 0.0, 0.0, L,
                         0.0, 0.0, 0.0, 0.0, L,
                         0.0, 0.0, 0.0, 0.0, L};
 
-double ddesenho2[25] = {0.0, 0.0, 0.0, L, 0.0,
-                        0.0, 0.0, 0.0, L, 0.0,
-                        0.0, 0.0, 0.0, L, 0.0,
-                        0.0, 0.0, 0.0, L, 0.0,
-                        0.0, 0.0, 0.0, L, 0.0};
+double ddesenho2[25] = {0.0, 0.0, 0.0, L, L/8,
+                        0.0, 0.0, 0.0, L, L/8,
+                        0.0, 0.0, 0.0, L, L/8,
+                        0.0, 0.0, 0.0, L, L/8,
+                        0.0, 0.0, 0.0, L, L/8};
 
-double ddesenho3[25] = {0.0, 0.0, L, 0.0, 0.0,
-                        0.0, 0.0, L, 0.0, 0.0,
-                        0.0, 0.0, L, 0.0, 0.0,
-                        0.0, 0.0, L, 0.0, 0.0,
-                        0.0, 0.0, L, 0.0, 0.0};
+double ddesenho3[25] = {0.0, 0.0, L, L/8, L/16,
+                        0.0, 0.0, L, L/8, L/16,
+                        0.0, 0.0, L, L/8, L/16,
+                        0.0, 0.0, L, L/8, L/16,
+                        0.0, 0.0, L, L/8, L/16};
 
-double ddesenho4[25] = {0.0, L, 0.0, 0.0, 0.0,
-                        0.0, L, 0.0, 0.0, 0.0,
-                        0.0, L, 0.0, 0.0, 0.0,
-                        0.0, L, 0.0, 0.0, 0.0,
-                        0.0, L, 0.0, 0.0, 0.0};
+double ddesenho4[25] = {0.0, L, L/8, L/16, 0.0,
+                        0.0, L, L/8, L/16, 0.0,
+                        0.0, L, L/8, L/16, 0.0,
+                        0.0, L, L/8, L/16, 0.0,
+                        0.0, L, L/8, L/16, 0.0};
 
-double ddesenho5[25] = {L, 0.0, 0.0, 0.0, 0.0,
-                        L, 0.0, 0.0, 0.0, 0.0,
-                        L, 0.0, 0.0, 0.0, 0.0,
-                        L, 0.0, 0.0, 0.0, 0.0,
-                        L, 0.0, 0.0, 0.0, 0.0};
+double ddesenho5[25] = {L, L/8, L/16, 0.0, 0.0,
+                        L, L/8, L/16, 0.0, 0.0,
+                        L, L/8, L/16, 0.0, 0.0,
+                        L, L/8, L/16, 0.0, 0.0,
+                        L, L/8, L/16, 0.0, 0.0};
+
+double ddesenho6[25] = {L/8, L/16, 0.0, 0.0, L,
+                        L/8, L/16, 0.0, 0.0, L,
+                        L/8, L/16, 0.0, 0.0, L,
+                        L/8, L/16, 0.0, 0.0, L,
+                        L/8, L/16, 0.0, 0.0, L};
+
+double ddesenho7[25] = {L/16, 0.0, 0.0, L, L/8,
+                        L/16, 0.0, 0.0, L, L/8,
+                        L/16, 0.0, 0.0, L, L/8,
+                        L/16, 0.0, 0.0, L, L/8,
+                        L/16, 0.0, 0.0, L, L/8};
 
 double seta1[25] =   {0.0, 0.0, 0.3, 0.0, 0.0,
                         0.0, 0.3, 0.3, 0.3, 0.0, 
@@ -526,6 +538,9 @@ int main()
                 //Linha 2 com animação invertida
                 break;
             case '4':
+                r = 0;
+                g = 0;
+                b = 0;
                 for(int i=0;i<3;i++){    
                     padrao5(seta1, valor_led, pio, sm, r, g, b);
                     sleep_ms(200);
@@ -552,26 +567,22 @@ int main()
             case '2':
                 break;
             case '5':
-                for (int i = 0; i < 3; i++)
-                {
-                    sleep_ms(V);
-                    padrao1(ddesenho1, valor_led, pio, sm, r, g, b);
-                    sleep_ms(V);
-                    padrao1(ddesenho2, valor_led, pio, sm, r, g, b);
-                    sleep_ms(V);
+                padrao1(ddesenho1, valor_led, pio, sm, r, g, b);
+                sleep_ms(V);
+                padrao1(ddesenho2, valor_led, pio, sm, r, g, b);
+            for (int i = 0; i < 8; i++)
+                {                    
+                    
                     padrao1(ddesenho3, valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
                     padrao1(ddesenho4, valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
                     padrao1(ddesenho5, valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
-                    padrao1(ddesenho4, valor_led, pio, sm, r, g, b);
+                    padrao1(ddesenho6, valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
-                    padrao1(ddesenho3, valor_led, pio, sm, r, g, b);
+                    padrao1(ddesenho7, valor_led, pio, sm, r, g, b);
                     sleep_ms(V);
-                    padrao1(ddesenho2, valor_led, pio, sm, r, g, b);
-                    sleep_ms(V);
-                    padrao1(ddesenho1, valor_led, pio, sm, r, g, b);
                 }
                 padrao1(matrixOff, valor_led, pio, sm, r, g, b);
                 break;
@@ -622,6 +633,9 @@ int main()
                 padrao2(matrixOn, valor_led, pio, sm, r, g, b);
                 break;
             case '#':
+                r=0;
+                g=0;
+                b=0;
                 padrao4(matrixOn, valor_led, pio, sm, r, g, b);
                 break;
             case '*':
