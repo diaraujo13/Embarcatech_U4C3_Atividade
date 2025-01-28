@@ -639,6 +639,7 @@ int main()
                 padrao4(matrixOn, valor_led, pio, sm, r, g, b);
                 break;
             case '*':
+                reset_usb_boot(0,0);
                 break;
             }
 
